@@ -190,3 +190,11 @@ button:active { transform: scale(.97); }
 .google-button:hover { box-shadow: 0 8px 20px rgba(24,32,31,.08); border-color: #cdd7ce; }
 .google-g { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #fff; color: #4285f4; font-family: Arial, sans-serif; font-size: 14px; font-weight: 800; }
 @media (max-width: 520px) { .onboarding-card { padding: 24px 18px; } .onboarding-grid { grid-template-columns: 1fr; gap: 0; } .onboarding-card h1 { font-size: 32px; } }
+
+.inline-editor, .profile-editor { margin-top: 14px; padding: 22px; background: #fff; border: 1px solid var(--line); border-radius: 13px; box-shadow: var(--shadow); }
+.editor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 14px 0 18px; }
+.editor-grid label { display: flex; flex-direction: column; gap: 6px; color: var(--muted); font-size: 9px; }
+.editor-grid input, .editor-grid select { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: #fafcf9; color: var(--ink); font-size: 10px; min-width: 0; }
+.editor-grid input:focus, .editor-grid select:focus { outline: 2px solid var(--violet); outline-offset: 1px; }
+@media (max-width: 720px) { .editor-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .editor-grid { grid-template-columns: 1fr; } }
