@@ -64,6 +64,9 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.lastSignedIn = new Date();
     }
 
+    values.updatedAt = new Date();
+    updateSet.updatedAt = values.updatedAt;
+
     if (Object.keys(updateSet).length === 0) {
       updateSet.lastSignedIn = new Date();
     }

@@ -1,12 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import prismaPackage from "@prisma/client";
+import type { PrismaClient as PrismaClientType } from "@prisma/client";
 
-const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+const { PrismaClient } = prismaPackage;
+
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClientType };
 const rawDatabaseUrl = process.env.DATABASE_URL ?? "";
 const databaseUrl = rawDatabaseUrl
   ? `${rawDatabaseUrl}${rawDatabaseUrl.includes("?") ? "&" : "?"}sslaccept=strict`
   : rawDatabaseUrl;
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({
+export const prisma: PrismaClientType = globalForPrisma.prisma ?? new PrismaClient({
   datasources: { db: { url: databaseUrl } },
 });
 
