@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { attendancePercent, priorityScore, safeSkipMargin } from "../shared/orbit";
+import { appRouter } from "./routers";
 
 describe("orbit academic logic", () => {
   it("calculates attendance percentages safely", () => {
@@ -17,5 +18,13 @@ describe("orbit academic logic", () => {
     const later = priorityScore({ daysUntilDue: 7, weightage: 3, estimatedMinutes: 45, averageMinutes: 90 });
     expect(urgent).toBeGreaterThan(later);
     expect(urgent).toBeGreaterThan(80);
+  });
+});
+
+
+describe("ai.parsePlannerInput", () => {
+  it("rejects empty planner input before invoking the model", async () => {
+    const caller = appRouter.createCaller({ user: null, req: {} as any, res: {} as any });
+    await expect(caller.ai.parsePlannerInput({ text: "" })).rejects.toThrow();
   });
 });
