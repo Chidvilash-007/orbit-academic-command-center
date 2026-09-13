@@ -206,3 +206,9 @@ button:active { transform: scale(.97); }
 .course-manager-row span { color: var(--muted); font-size: 9px; }
 .danger-icon { color: #d55789; }
 .course-add-grid { margin-top: 12px; }
+
+/* Keep confirmation toasts above the timetable controls on every viewport. */
+[data-sonner-toaster] { --width: min(360px, calc(100vw - 28px)); z-index: 100; }
+[data-sonner-toaster][data-y-position="bottom"] { bottom: 22px !important; }
+[data-sonner-toast] { margin-bottom: 8px; }
+@media (max-width: 520px) { [data-sonner-toaster][data-y-position="bottom"] { bottom: 72px !important; } }
