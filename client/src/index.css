@@ -212,3 +212,13 @@ button:active { transform: scale(.97); }
 [data-sonner-toaster][data-y-position="bottom"] { bottom: 22px !important; }
 [data-sonner-toast] { margin-bottom: 8px; }
 @media (max-width: 520px) { [data-sonner-toaster][data-y-position="bottom"] { bottom: 72px !important; } }
+
+/* Timetable semantics: theory and lab blocks are intentionally different at a glance. */
+.calendar-event.theory-block { background: linear-gradient(135deg, #eeeaff 0%, #e8e4ff 100%); color: #5848be; border-left: 4px solid #8d7aff; }
+.calendar-event.lab-block { background: linear-gradient(135deg, #fff0df 0%, #ffe1bf 100%); color: #a85d18; border-left: 4px solid #f5a65b; min-height: 108px; }
+.calendar-event.theory-block:before, .calendar-event.lab-block:before { content: ""; position: absolute; top: 9px; right: 9px; width: 7px; height: 7px; border-radius: 50%; }
+.calendar-event.theory-block:before { background: #8d7aff; box-shadow: 0 0 0 4px rgba(141,122,255,.14); }
+.calendar-event.lab-block:before { background: #f5a65b; box-shadow: 0 0 0 4px rgba(245,166,91,.18); }
+.calendar-event.lab-block strong { font-size: 10px; }
+.event-type-badge { display: inline-block; width: fit-content; margin-top: 8px; padding: 3px 5px; border-radius: 4px; font-family: "DM Mono", monospace; font-size: 6px; font-style: normal; font-weight: 700; letter-spacing: .04em; background: rgba(255,255,255,.55); color: currentColor; }
+@media (max-width: 520px) { .calendar-event { padding: 8px 7px; } .event-type-badge { font-size: 5px; } }
