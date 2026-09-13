@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+model User {
+  id                  Int       @id @default(autoincrement())
+  openId              String    @unique @map("openId") @db.VarChar(64)
+  name                String?   @db.Text
+  email               String?   @db.VarChar(320)
+  loginMethod         String?   @map("loginMethod") @db.VarChar(64)
+  role                Role      @default(user)
+  createdAt           DateTime  @default(now()) @map("createdAt") @db.Timestamp(0)
+  updatedAt           DateTime  @updatedAt @map("updatedAt") @db.Timestamp(0)
+  lastSignedIn        DateTime  @default(now()) @map("lastSignedIn") @db.Timestamp(0)
+  googleId            String?   @unique @map("googleId") @db.VarChar(191)
+  image               String?   @db.Text
+  university          String?   @db.VarChar(191)
+  program             String?   @db.VarChar(191)
+  year                Int?
+  semester            Int?
+  targetCgpa          Decimal?  @map("targetCgpa") @db.Decimal(3, 2)
+  attendanceMandate  Int?      @default(75) @map("attendanceMandate")
+  preferredStudyStart String?   @map("preferredStudyStart") @db.VarChar(8)
+  preferredStudyEnd   String?   @map("preferredStudyEnd") @db.VarChar(8)
+  onboardingComplete Boolean   @default(false) @map("onboardingComplete")
+
+  courses             Course[]
+  tasks               Task[]
+  timetableEvents     TimetableEvent[]
+
+  @@map("users")
+}
+
+model Course {
+  id          Int              @id @default(autoincrement())
+  userId      Int              @map("userId")
+  code        String           @db.VarChar(32)
+  name        String           @db.VarChar(191)
+  credits     Int              @default(3)
+  color       String           @default("violet") @db.VarChar(24)
+  createdAt   DateTime         @default(now()) @map("createdAt") @db.Timestamp(0)
+  updatedAt   DateTime         @updatedAt @map("updatedAt") @db.Timestamp(0)
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks       Task[]
+  timetableEvents TimetableEvent[]
+
+  @@unique([userId, code])
+  @@index([userId])
+  @@map("courses")
+}
+
+model Task {
+  id              Int        @id @default(autoincrement())
+  userId          Int        @map("userId")
+  courseId        Int?       @map("courseId")
+  title           String     @db.VarChar(191)
+  description     String?    @db.Text
+  dueAt           DateTime?  @map("dueAt") @db.Timestamp(0)
+  priority        String     @default("medium") @db.VarChar(16)
+  durationMinutes Int        @default(45) @map("durationMinutes")
+  status          TaskStatus @default(TODO)
+  aiRationale     String?    @map("aiRationale") @db.Text
+  createdAt       DateTime   @default(now()) @map("createdAt") @db.Timestamp(0)
+  updatedAt       DateTime   @updatedAt @map("updatedAt") @db.Timestamp(0)
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course          Course?    @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  @@index([userId, status])
+  @@index([userId, dueAt])
+  @@map("tasks")
+}
+
+model TimetableEvent {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @map("userId")
+  courseId    Int?     @map("courseId")
+  title       String   @db.VarChar(191)
+  dayOfWeek   Int      @map("dayOfWeek")
+  startMinute Int      @map("startMinute")
+  endMinute   Int      @map("endMinute")
+  room        String?  @db.VarChar(64)
+  eventType   String   @default("class") @map("eventType") @db.VarChar(24)
+  createdAt   DateTime @default(now()) @map("createdAt") @db.Timestamp(0)
+  updatedAt   DateTime @updatedAt @map("updatedAt") @db.Timestamp(0)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+
+  @@index([userId, dayOfWeek])
+  @@map("timetable_events")
+}
