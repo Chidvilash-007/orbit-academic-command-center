@@ -198,3 +198,11 @@ button:active { transform: scale(.97); }
 .editor-grid input:focus, .editor-grid select:focus { outline: 2px solid var(--violet); outline-offset: 1px; }
 @media (max-width: 720px) { .editor-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px) { .editor-grid { grid-template-columns: 1fr; } }
+
+.course-manager-list { display: flex; flex-direction: column; gap: 8px; margin: 14px 0; max-height: 220px; overflow-y: auto; }
+.course-manager-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 9px; background: #fafcf9; }
+.course-manager-row > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.course-manager-row strong { font-size: 11px; }
+.course-manager-row span { color: var(--muted); font-size: 9px; }
+.danger-icon { color: #d55789; }
+.course-add-grid { margin-top: 12px; }
