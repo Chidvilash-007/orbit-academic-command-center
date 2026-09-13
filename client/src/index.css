@@ -222,3 +222,32 @@ button:active { transform: scale(.97); }
 .calendar-event.lab-block strong { font-size: 10px; }
 .event-type-badge { display: inline-block; width: fit-content; margin-top: 8px; padding: 3px 5px; border-radius: 4px; font-family: "DM Mono", monospace; font-size: 6px; font-style: normal; font-weight: 700; letter-spacing: .04em; background: rgba(255,255,255,.55); color: currentColor; }
 @media (max-width: 520px) { .calendar-event { padding: 8px 7px; } .event-type-badge { font-size: 5px; } }
+
+/* True 08:00–20:00 timetable scale: events are positioned by their start minute. */
+.calendar-column { display: block; min-height: 470px; padding: 0; }
+.calendar-column .grid-line { position: absolute; left: 0; right: 0; height: 0; min-height: 0; border-bottom: 1px dashed #edf0ec; pointer-events: auto; z-index: 0; }
+.calendar-column .grid-line:nth-child(1) { top: 0%; }
+.calendar-column .grid-line:nth-child(2) { top: 16.666%; }
+.calendar-column .grid-line:nth-child(3) { top: 33.333%; }
+.calendar-column .grid-line:nth-child(4) { top: 50%; }
+.calendar-column .grid-line:nth-child(5) { top: 66.666%; }
+.calendar-column .grid-line:nth-child(6) { top: 83.333%; }
+.calendar-column .calendar-event { position: absolute; left: 7px; right: 7px; margin: 0; min-height: 0; overflow: hidden; z-index: 2; }
+.calendar-column .calendar-event + .calendar-event { margin-top: 0; }
+.calendar-column .calendar-event:hover { z-index: 4; }
+
+/* Persisted dark theme surfaces. Accent colors remain Orbit lavender/mint for continuity. */
+.dark { --bg: #111615; --paper: #18201f; --ink: #edf3ef; --muted: #a2b0aa; --line: #2b3732; --soft: #24302b; --shadow: 0 16px 50px rgba(0,0,0,.22); color-scheme: dark; }
+.dark body, .dark html { background: var(--bg); color: var(--ink); }
+.dark .sidebar { background: #151d1b; border-color: var(--line); }
+.dark .workspace-switcher, .dark .calendar-head, .dark .planner-column, .dark .command-foot { background: #1d2824; border-color: var(--line); }
+.dark .panel, .dark .metric-card, .dark .stat-card, .dark .attendance-card, .dark .planner-summary, .dark .calendar-board, .dark .utility-modal, .dark .inline-editor, .dark .task-card { background: var(--paper); border-color: var(--line); }
+.dark .calendar-head, .dark .calendar-column, .dark .time-axis { border-color: var(--line); }
+.dark .calendar-column .grid-line { border-color: #2b3732; }
+.dark .day-pill.active, .dark .segmented { background: #282341; }
+.dark .segmented button.selected { background: #30382f; color: var(--ink); }
+.dark input, .dark select, .dark textarea, .dark .command-input { background: #111816; color: var(--ink); border-color: var(--line); }
+.dark .calendar-event.theory-block { background: linear-gradient(135deg, #292451, #37306b); color: #ded8ff; }
+.dark .calendar-event.lab-block { background: linear-gradient(135deg, #57351d, #73471f); color: #ffe1bb; }
+.dark .ai-note, .dark .insight-strip, .dark .attendance-callout { background: #282619; border-color: #514b2e; }
+.dark .footer { color: #819088; }
