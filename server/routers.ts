@@ -57,7 +57,7 @@ export const appRouter = router({
   courses: router({
     list: protectedProcedure.query(({ ctx }) => prisma.course.findMany({ where: { userId: ctx.user.id }, orderBy: { name: "asc" } })),
     create: protectedProcedure.input(z.object({ code: z.string().min(2).max(32), name: z.string().min(2).max(191), credits: z.number().int().min(1).max(10).default(3), color: z.string().max(24).default("violet") })).mutation(({ ctx, input }) => prisma.course.create({ data: { ...input, userId: ctx.user.id } })),
-    delete: protectedProcedure.input(z.object({ id: z.number().int() })).mutation(({ ctx, input }) => prisma.course.deleteMany({ where: { id: input.id, userId: ctx.user.id } })),
+    delete: protectedProcedure.input(z.object({ id: z.number().int() })).mutation(({ ctx, input }) => prisma.$transaction(async (tx) => { await tx.timetableEvent.deleteMany({ where: { courseId: input.id, userId: ctx.user.id } }); return tx.course.deleteMany({ where: { id: input.id, userId: ctx.user.id } }); })),
   }),
   tasks: router({
     list: protectedProcedure.query(({ ctx }) => prisma.task.findMany({ where: { userId: ctx.user.id }, include: { course: true }, orderBy: [{ status: "asc" }, { dueAt: "asc" }] })),
@@ -67,6 +67,7 @@ export const appRouter = router({
   timetable: router({
     list: protectedProcedure.query(({ ctx }) => prisma.timetableEvent.findMany({ where: { userId: ctx.user.id }, include: { course: true }, orderBy: [{ dayOfWeek: "asc" }, { startMinute: "asc" }] })),
     create: protectedProcedure.input(z.object({ title: z.string().min(2).max(191), courseId: z.number().int().optional(), dayOfWeek: z.number().int().min(0).max(6), startMinute: z.number().int().min(0).max(1439), endMinute: z.number().int().min(1).max(1440), room: z.string().max(64).optional(), eventType: z.string().max(24).default("class") })).mutation(({ ctx, input }) => prisma.timetableEvent.create({ data: { ...input, userId: ctx.user.id } })),
+    update: protectedProcedure.input(z.object({ id: z.number().int(), title: z.string().min(2).max(191), courseId: z.number().int().optional(), dayOfWeek: z.number().int().min(0).max(6), startMinute: z.number().int().min(0).max(1439), endMinute: z.number().int().min(1).max(1440), room: z.string().max(64).optional(), eventType: z.string().max(24) })).mutation(({ ctx, input }) => { const { id, ...data } = input; return prisma.timetableEvent.updateMany({ where: { id, userId: ctx.user.id }, data }); }),
     updatePosition: protectedProcedure.input(z.object({ id: z.number().int(), dayOfWeek: z.number().int().min(0).max(6), startMinute: z.number().int().min(0).max(1439), endMinute: z.number().int().min(1).max(1440) })).mutation(({ ctx, input }) => prisma.timetableEvent.updateMany({ where: { id: input.id, userId: ctx.user.id }, data: { dayOfWeek: input.dayOfWeek, startMinute: input.startMinute, endMinute: input.endMinute } })),
     delete: protectedProcedure.input(z.object({ id: z.number().int() })).mutation(({ ctx, input }) => prisma.timetableEvent.deleteMany({ where: { id: input.id, userId: ctx.user.id } })),
   }),
