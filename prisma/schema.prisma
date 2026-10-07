@@ -43,6 +43,8 @@ model User {
   courses             Course[]
   tasks               Task[]
   timetableEvents     TimetableEvent[]
+  materials           Material[]
+  generatedNotes      GeneratedNote[]
 
   @@map("users")
 }
@@ -103,4 +105,39 @@ model TimetableEvent {
 
   @@index([userId, dayOfWeek])
   @@map("timetable_events")
+}
+
+model Material {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("userId")
+  title       String    @db.VarChar(191)
+  fileName    String    @map("fileName") @db.VarChar(191)
+  fileKey     String    @map("fileKey") @db.Text
+  fileUrl     String    @map("fileUrl") @db.Text
+  mimeType    String    @map("mimeType") @db.VarChar(128)
+  sizeBytes   Int       @map("sizeBytes")
+  courseName  String?   @map("courseName") @db.VarChar(191)
+  createdAt   DateTime  @default(now()) @map("createdAt") @db.Timestamp(0)
+  updatedAt   DateTime  @updatedAt @map("updatedAt") @db.Timestamp(0)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notes       GeneratedNote[]
+
+  @@index([userId, createdAt])
+  @@map("materials")
+}
+
+model GeneratedNote {
+  id          Int       @id @default(autoincrement())
+  materialId  Int       @map("materialId")
+  userId      Int       @map("userId")
+  title       String    @db.VarChar(191)
+  content     String    @db.LongText
+  pdfKey      String    @map("pdfKey") @db.Text
+  pdfUrl      String    @map("pdfUrl") @db.Text
+  createdAt   DateTime  @default(now()) @map("createdAt") @db.Timestamp(0)
+  material    Material  @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, materialId])
+  @@map("generated_notes")
 }

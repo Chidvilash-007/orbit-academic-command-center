@@ -258,3 +258,22 @@ button:active { transform: scale(.97); }
 .dark .calendar-event.lab-block { background: linear-gradient(135deg, #57351d, #73471f); color: #ffe1bb; }
 .dark .ai-note, .dark .insight-strip, .dark .attendance-callout { background: #282619; border-color: #514b2e; }
 .dark .footer { color: #819088; }
+
+/* Materials Vault workflow */
+.material-card-interactive { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; cursor: pointer; text-align: left; width: 100%; }
+.material-card-interactive.selected { border-color: var(--violet); box-shadow: 0 0 0 3px rgba(141,122,255,.12); }
+.material-actions { display: flex; align-items: center; gap: 8px; }
+.generator-button { display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 8px; background: #edeaff; color: #6452ce; padding: 8px 10px; font-size: 10px; font-weight: 800; white-space: nowrap; }
+.generator-button:hover { background: #ddd6ff; transform: translateY(-1px); }
+.generator-button:disabled { opacity: .6; cursor: wait; }
+.notes-workspace { margin-top: 20px; padding: 22px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+.notes-workspace-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.notes-workspace-head h3 { margin: 5px 0 6px; }
+.notes-workspace-head p { margin: 0; color: var(--muted); font-size: 12px; max-width: 650px; line-height: 1.6; }
+.notes-preview { margin: 18px 0 0; padding: 20px; border-radius: 12px; background: var(--soft); color: var(--ink); white-space: pre-wrap; font-family: inherit; font-size: 12px; line-height: 1.7; max-height: 430px; overflow: auto; }
+.notes-locked, .empty-vault { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 150px; padding: 30px; border: 1px dashed var(--line); border-radius: 14px; color: var(--muted); text-align: center; }
+.notes-locked strong, .empty-vault strong { color: var(--ink); }
+.notes-locked svg, .empty-vault svg { color: var(--violet); }
+.dark .generator-button { background: #332d61; color: #e4deff; }
+.dark .generator-button:hover { background: #403875; }
+@media (max-width: 680px) { .material-card-interactive { grid-template-columns: auto minmax(0,1fr); } .material-actions { grid-column: 2; justify-content: flex-start; } .notes-workspace-head { flex-direction: column; } }
